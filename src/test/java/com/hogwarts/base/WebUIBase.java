@@ -3,12 +3,14 @@ package com.hogwarts.base;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 public abstract class WebUIBase {
@@ -16,7 +18,7 @@ public abstract class WebUIBase {
     private String propFileName = "iselenium.properties";
 
     protected String testcaseName = "";
-    protected String curBrowser = "firefox"; //默认浏览器是firefox
+    protected String curBrowser = "chrome"; //默认浏览器是firefox
     protected WebDriver driver;
     protected WebDriver.Navigation navigation;
     protected String firefoxPath = "";
@@ -82,19 +84,23 @@ public abstract class WebUIBase {
     private Properties loadFromEnvProperties(String propFileName) {
         Properties prop = null;
 
-        String path = System.getProperty("user.home");
+//        String path = System.getProperty("user.home");
+
 
         //读入envProperties属性文件
         try {
+//            prop = new Properties();
+//            InputStream in = new BufferedInputStream(
+//                    new FileInputStream(path + File.separator + propFileName));
+//            prop.load(in);
+//            in.close();
             prop = new Properties();
-            InputStream in = new BufferedInputStream(
-                    new FileInputStream(path + File.separator + propFileName));
-            prop.load(in);
-            in.close();
+            InputStream input = new FileInputStream(new File(WebUIBase.class.getResource(File.separator + propFileName).getPath()));
+            prop.load(new InputStreamReader(input, Charset.forName("UTF-8")));
         } catch (IOException ioex) {
             logger.error(ioex.getMessage());
-            logger.error("Load config file fail, please check " + path + " to confirm if the "
-                    + propFileName + " file exist!");
+//            logger.error("Load config file fail, please check " + path + " to confirm if the "
+//                    + propFileName + " file exist!");
         }
 
         return prop;
