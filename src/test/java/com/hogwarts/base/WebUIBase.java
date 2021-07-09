@@ -15,6 +15,7 @@ import java.util.Properties;
 
 public abstract class WebUIBase {
     private Logger logger = Logger.getLogger(WebUIBase.class);
+
     private String propFileName = "iselenium.properties";
 
     protected String testcaseName = "";
@@ -28,6 +29,11 @@ public abstract class WebUIBase {
 
     @BeforeEach
     public void begin() {
+        System.out.println("**************************");
+        System.out.println(System.getProperty("user.home"));
+        System.out.println("**************************");
+
+
         //加载配置文件，注意需要事先将配置文件放到user.home下
         logger.info("Load properties file:" + propFileName);
         Properties prop = loadFromEnvProperties(propFileName);
